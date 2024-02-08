@@ -16,5 +16,9 @@ git init && git add -A && git commit -m "Initial commit"
 npm install lucia oslo
 npm i @lucia-auth/adapter-drizzle
 npm i drizzle-orm better-sqlite3
+npm i -D @types/better-sqlite3
 npm i -D drizzle-kit
+
+npm run db:generate
+npm run db:push
 ```
