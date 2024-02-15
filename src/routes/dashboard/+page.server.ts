@@ -25,11 +25,11 @@ export const actions = {
 
 export const load = async ({ locals: { user }, cookies }) => {
 	if (!user) {
-		throw redirect(
+		redirect(
 			routes.login.href,
 			{
 				type: 'error',
-				message: 'You must be logged in to view this dashboard'
+				message: 'You must be logged in to view the dashboard'
 			},
 			cookies
 		);

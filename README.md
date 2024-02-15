@@ -29,5 +29,4 @@ npm install --save @paralleldrive/cuid2
 npm install bcrypt
 npm i -D sveltekit-flash-message
 npm i svelte-sonner
-
 ```

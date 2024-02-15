@@ -1,18 +1,21 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { toast } from 'svelte-sonner';
+	import { Toaster, toast } from 'svelte-sonner';
 	import { getFlash } from 'sveltekit-flash-message';
 	import type { PageData } from './$types';
 	import Nav from './nav.svelte';
+
 	export let data: PageData;
 
 	const flash = getFlash(page);
 	$: if ($flash) {
 		toast.info($flash.message);
+		$flash = undefined;
 	}
 </script>
 
 <div>
+	<Toaster />
 	<Nav isLoggedIn={data.isLoggedIn} />
 	<slot />
 </div>
