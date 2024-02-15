@@ -27,10 +27,25 @@ export const getAllUsers = async () => {
 
 export const deleteAllUsers = async () => await db.delete(userTable);
 
+export const deleteUsers = async (email: string) =>
+	await db.delete(userTable).where(eq(userTable.email, email));
+
 export const getUserName = async (userId: string) => {
 	const result = await db
 		.select({ name: userTable.name })
 		.from(userTable)
 		.where(eq(userTable.id, userId));
 	return result[0]?.name;
+};
+
+export const getUser = async (email: string) => {
+	const result = await db
+		.select({
+			name: userTable.name,
+			password: userTable.password,
+			id: userTable.id
+		})
+		.from(userTable)
+		.where(eq(userTable.email, email));
+	return result[0];
 };

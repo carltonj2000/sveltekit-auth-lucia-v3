@@ -1,20 +1,24 @@
 <script lang="ts">
-	const name = 'Carlton';
-	const email = 'carlton.joseph@gmail.com';
+	import { enhance } from '$app/forms';
+	import type { PageData } from './$types';
+	export let data: PageData;
+	const { form } = data;
 </script>
 
 <h2>Dashboard</h2>
 
-<h3>Hello {name}</h3>
+<div>
+	<h3>Hello {data.user.name}</h3>
 
-<form>
-	<button type="submit">Logout</button>
-</form>
+	<form method="post" use:enhance action="?/logout">
+		<button type="submit">Logout</button>
+	</form>
+</div>
 
-<form class="lower">
-	<button type="submit">Delete User</button>
+<form method="post" use:enhance action="?/delete" class="lower">
 	<label for="email">Email</label>
-	<input type="email" name="email" id="email" value={email} disabled />
+	<input type="email" name="email" value={data.user.email} />
+	<button type="submit">Delete User</button>
 </form>
 
 <style>
@@ -27,6 +31,10 @@
 		border: none;
 	}
 	.lower {
-		margin-top: 3rem;
+		margin-top: 2rem;
+	}
+	div {
+		display: flex;
+		gap: 2rem;
 	}
 </style>

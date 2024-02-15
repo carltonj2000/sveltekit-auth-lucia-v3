@@ -1,19 +1,20 @@
-<script>
+<script lang="ts">
 	import { page } from '$app/stores';
-
-	const links = [
-		{ href: '/', name: 'Home' },
-		{ href: '/dashboard', name: 'Dashboard' },
-		{ href: '/login', name: 'Login' },
-		{ href: '/register', name: 'Register' }
-	];
+	import { routes } from './routes';
+	export let isLoggedIn: boolean;
 </script>
 
 <div>
 	<h1>Lucia Auth V3</h1>
 	<nav>
-		{#each links as { href, name }}
-			<a {href} class:active={$page.url.pathname === href}>{name}</a>
+		{#each Object.values(routes) as { href, name, loggedInD }}
+			{#if isLoggedIn}
+				{#if loggedInD}
+					<a {href} class:active={$page.url.pathname === href}>{name}</a>
+				{/if}
+			{:else}
+				<a {href} class:active={$page.url.pathname === href}>{name}</a>
+			{/if}
 		{/each}
 	</nav>
 </div>

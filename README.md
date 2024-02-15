@@ -5,6 +5,7 @@
 The code in this repository is base on the following:
 
 - https://youtu.be/iouhcbeLe60?si=72__Cx7_j3t5eY2-
+- [flash messages](https://youtu.be/hB6OkaYWS5I?si=aQn_gWg58TtICwBA)
 
 ## Creation History
 
@@ -21,4 +22,12 @@ npm i -D drizzle-kit
 
 npm run db:generate
 npm run db:push
+
+npm i -D sveltekit-superforms zod
+npm i drizzle-zod
+npm install --save @paralleldrive/cuid2
+npm install bcrypt
+npm i -D sveltekit-flash-message
+npm i svelte-sonner
+
 ```

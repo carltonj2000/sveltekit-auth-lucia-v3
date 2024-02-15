@@ -1,14 +1,35 @@
-<script>
+<script lang="ts">
+	import { superForm } from 'sveltekit-superforms/client';
+	import type { PageData } from './$types';
+	export let data: PageData;
+	const { form, errors, constraints, enhance, tainted } = superForm(data.from, {
+		taintedMessage:
+			'Do you want to leave the page as changes have been made by you.'
+	});
 </script>
 
 <div>
 	<h2>Login</h2>
 
-	<form>
+	<form method="post" use:enhance action="?/login">
 		<label for="email">Email</label>
-		<input type="email" name="email" id="email" required />
+		<input
+			type="email"
+			name="email"
+			bind:value={$form.email}
+			{...$constraints.email}
+		/>
+		{#if $errors.email}<span class="invalid">{$errors.email}</span>{/if}
+
 		<label for="password">Password</label>
-		<input type="password" name="password" id="password" required />
+		<input
+			type="password"
+			name="password"
+			bind:value={$form.password}
+			{...$constraints.password}
+		/>
+		{#if $errors.password}<span class="invalid">{$errors.password}</span>{/if}
+
 		<button type="submit">Submit</button>
 	</form>
 </div>
@@ -35,5 +56,13 @@
 	label {
 		text-align: end;
 		margin-right: 0.5rem;
+	}
+	.invalid {
+		grid-column: 1/-1;
+		background-color: red;
+		color: yellow;
+		margin-bottom: 0.5rem;
+		padding: 0.2rem 0.5rem;
+		border-radius: 0.5rem;
 	}
 </style>
