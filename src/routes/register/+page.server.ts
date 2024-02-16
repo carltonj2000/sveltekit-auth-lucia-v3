@@ -4,6 +4,7 @@ import { createId } from '@paralleldrive/cuid2';
 import bcrypt from 'bcrypt';
 import { redirect } from 'sveltekit-flash-message/server';
 import { setError, superValidate } from 'sveltekit-superforms/server';
+import { routes } from '../routes';
 
 export const actions = {
 	register: async ({ request, cookies }) => {
@@ -19,17 +20,8 @@ export const actions = {
 		await insertNewUser(form.data);
 		form.data.password = password;
 
-		// const session = await lucia.createSession(form.data.id, {});
-		// const sessionCookie = lucia.createSessionCookie(session.id);
-
-		// cookies.set(sessionCookie.name, sessionCookie.value, {
-		// path: '.',
-		// ...sessionCookie.attributes
-		// });
-
-		// return { form };
 		redirect(
-			'/login',
+			routes.login.href,
 			{
 				type: 'success',
 				message: 'Confirm your email before logging in'

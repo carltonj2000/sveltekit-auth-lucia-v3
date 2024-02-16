@@ -38,7 +38,7 @@
 			{...$constraints.password}
 		/>
 		{#if $errors.password}<span class="invalid">{$errors.password}</span>{/if}
-		<button type="submit">Submit</button>
+		<button type="submit">Register</button>
 	</form>
 </div>
 

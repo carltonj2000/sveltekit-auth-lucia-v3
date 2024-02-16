@@ -1,5 +1,6 @@
 import { lucia } from '$lib/db/auth';
 import { redirect, type Handle } from '@sveltejs/kit';
+import { routes } from './routes/routes';
 
 export const handle: Handle = async ({ event, resolve }) => {
 	const sessionId = event.cookies.get(lucia.sessionCookieName);
@@ -27,9 +28,14 @@ export const handle: Handle = async ({ event, resolve }) => {
 		});
 	}
 
-	if (session && event.url.pathname !== '/dashboard' && event.url.pathname !== '/') {
-		throw redirect(303, '/dashboard');
+	const loggedInRoute = Object.values(routes).reduce(
+		(a, v) => (event.url.pathname === v.href ? a || v.loggedInD : a),
+		false
+	);
+	if (session && !loggedInRoute) {
+		redirect(303, routes.home.href);
 	}
+
 	event.locals.user = user;
 	event.locals.session = session;
 	return resolve(event);

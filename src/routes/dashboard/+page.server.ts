@@ -4,22 +4,46 @@ import { redirect } from 'sveltekit-flash-message/server';
 import { routes } from '../routes';
 
 export const actions = {
-	logout: async ({ cookies }) => {
-		const session = cookies.get('auth_session');
-		if (!session) return;
-		await lucia.invalidateSession(session);
+	logout: async ({ cookies, locals }) => {
+		if (!locals.session?.id) return;
+		await lucia.invalidateSession(locals.session.id);
+		const sessionCookie = lucia.createBlankSessionCookie();
+		cookies.set(sessionCookie.name, sessionCookie.value, {
+			path: '.',
+			...sessionCookie.attributes
+		});
+		redirect(
+			routes.login.href,
+			{
+				type: 'success',
+				message: 'Logged Out'
+			},
+			cookies
+		);
 	},
-	delete: async ({ cookies, request }) => {
+	delete: async ({ cookies, locals, request }) => {
 		const data = await request.formData();
 		const email = data.get('email')?.toString();
 		if (!email) {
-			console.error('no email');
+			console.error('form has no email');
 			return;
 		}
-		const session = cookies.get('auth_session');
-		if (!session) return;
-		await lucia.invalidateSession(session);
+		if (!locals.session?.id) return;
+		await lucia.invalidateSession(locals.session.id);
 		await deleteUsers(email);
+		const sessionCookie = lucia.createBlankSessionCookie();
+		cookies.set(sessionCookie.name, sessionCookie.value, {
+			path: '.',
+			...sessionCookie.attributes
+		});
+		redirect(
+			routes.home.href,
+			{
+				type: 'success',
+				message: `Successfully deleted user with email: ${email}`
+			},
+			cookies
+		);
 	}
 };
 
