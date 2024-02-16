@@ -15,7 +15,7 @@
 </script>
 
 <div>
-	<Toaster />
+	<Toaster richColors closeButton position={'top-center'} />
 	<Nav isLoggedIn={data.isLoggedIn} />
 	<slot />
 </div>
