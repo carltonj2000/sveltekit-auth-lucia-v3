@@ -1,5 +1,9 @@
 # SvelteKit Auth With Lucia V3
 
+Note DNS values are either setup for resend or forwardemail provider.
+At present forwardemail is setup at the DNS.
+If resend is required then update the DNS values.
+
 ## Code History
 
 The code in this repository is base on the following:
