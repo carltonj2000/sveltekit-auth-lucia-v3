@@ -1,13 +1,12 @@
-import { DrizzleSQLiteAdapter } from '@lucia-auth/adapter-drizzle';
 import { sql } from 'drizzle-orm';
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
-import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
-import { db } from './server';
+import { createInsertSchema } from 'drizzle-zod';
 
 export const userTable = sqliteTable('user', {
 	id: text('id').primaryKey(),
 	name: text('name').notNull(),
 	email: text('email').notNull().unique(),
+	verified: integer('verified', { mode: 'boolean' }).notNull().default(false),
 	password: text('password').notNull(),
 	createdAt: text('created_at')
 		.notNull()
@@ -22,10 +21,21 @@ export const sessionTable = sqliteTable('session', {
 	expiresAt: integer('expires_at').notNull()
 });
 
-export const adapter = new DrizzleSQLiteAdapter(db, sessionTable, userTable);
+export const verificationTable = sqliteTable('verification', {
+	id: integer('id', { mode: 'number' }).primaryKey({ autoIncrement: true }),
+	userId: text('user_id')
+		.notNull()
+		.references(() => userTable.id),
+	code: text('code').notNull(),
+	email: text('email').notNull(),
+	expiresAt: integer('expires_at', { mode: 'timestamp' }).notNull()
+});
 
 export type UserInsertSchema = typeof userTable.$inferInsert;
 export type UserSelectSchema = typeof userTable.$inferSelect;
+
+export type VerificationInsertSchema = typeof verificationTable.$inferInsert;
+export type VerificationSelectSchema = typeof verificationTable.$inferSelect;
 
 export const UserInsertSchemaZ = createInsertSchema(userTable, {
 	name: (schema) =>
@@ -46,4 +56,9 @@ export const UserInsertSchemaZ = createInsertSchema(userTable, {
 			.default('password')
 });
 
-export const UserSelectSchemaZ = createSelectSchema(userTable);
+export const VerificationInsertSchemaZ = createInsertSchema(verificationTable, {
+	code: (schema) =>
+		schema.code
+			.length(8, { message: 'The code has to be exactly 8 characters.' })
+			.default('12345678')
+});

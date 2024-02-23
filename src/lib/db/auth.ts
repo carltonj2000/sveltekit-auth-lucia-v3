@@ -1,10 +1,15 @@
 import { dev } from '$app/environment';
+import { DrizzleSQLiteAdapter } from '@lucia-auth/adapter-drizzle';
 import { Lucia } from 'lucia';
-import { adapter } from './schema';
+import { sessionTable, userTable } from './schema';
+import { db } from './server';
+
+export const adapter = new DrizzleSQLiteAdapter(db, sessionTable, userTable);
 
 type DatabaseUserAttributes = {
 	name: string;
 	email: string;
+	verified: number;
 };
 
 export const lucia = new Lucia(adapter, {
@@ -16,7 +21,8 @@ export const lucia = new Lucia(adapter, {
 	getUserAttributes: (databaseUserAttributes) => {
 		return {
 			name: databaseUserAttributes.name,
-			email: databaseUserAttributes.email
+			email: databaseUserAttributes.email,
+			verified: databaseUserAttributes.verified
 		};
 	}
 });

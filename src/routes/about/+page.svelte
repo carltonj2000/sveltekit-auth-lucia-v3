@@ -10,6 +10,14 @@
 	<form method="post" use:enhance action="?/redir">
 		<button type="submit">Server Redirect</button>
 	</form>
+
+	<form method="post" use:enhance action="?/resend">
+		<button type="submit">Send Email (via Resend)</button>
+	</form>
+
+	<form method="post" use:enhance action="?/forwardemail">
+		<button type="submit">Send Email (via forwardemail)</button>
+	</form>
 </div>
 
 <style>

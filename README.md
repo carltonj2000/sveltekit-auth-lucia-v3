@@ -30,3 +30,18 @@ npm install bcrypt
 npm i -D sveltekit-flash-message
 npm i svelte-sonner
 ```
+
+On schema update, migrate via:
+
+```bash
+npm run db:generate
+npm run db:push
+```
+
+Email verification code.
+
+```bash
+npm install resend # for resend email
+
+npm install nodemailer # for forwardemail
+```
