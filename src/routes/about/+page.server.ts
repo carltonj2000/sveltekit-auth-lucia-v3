@@ -9,7 +9,7 @@ const transporter = nodemailer.createTransport({
 	port: 465,
 	secure: true,
 	auth: {
-		user: 'carlton@appsfortracking.com',
+		user: env.FROM_EMAIL,
 		pass: env.FORWARDEMAIL_PW
 	}
 });
@@ -21,8 +21,8 @@ export const actions = {
 	resend: async () => {
 		console.log('sending');
 		const { data, error } = await resend.emails.send({
-			from: 'AppsForTracking <admin@appsfortracking.com>',
-			to: ['carlton.joseph@gmail.com'],
+			from: `AppsForTracking <${FROM_EMAIL}>`,
+			to: [env.TO_EMAIL],
 			subject: 'Hello World',
 			html: '<strong>It works!</strong>'
 		});
@@ -36,8 +36,8 @@ export const actions = {
 	forwardemail: async () => {
 		console.log('forwarding');
 		const info = await transporter.sendMail({
-			from: '"AppsForTracking" <carlton@appsfortracking.com>',
-			to: 'carlton.joseph@gmail.com',
+			from: `"AppsForTracking" <${env.FROM_EMAIL}>`,
+			to: env.TO_EMAIL,
 			subject: 'Howdy',
 			html: '<p>Hello <b>world?</b></p>'
 		});
